@@ -72,4 +72,114 @@ $end->process;
 print encode_utf8($tags->flush);
 
 # Output:
-# TODO
+# <!DOCTYPE html>
+# <html lang="en">
+#   <head>
+#     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+#     <meta name="author" content="Michal Josef Špaček" />
+#     <meta name="generator" content="Tags::HTML::Tree" />
+#     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+#     <script type="text/javascript">
+# window.addEventListener('load', (event) => {
+#     let toggler = document.getElementsByClassName("caret");
+#     for (let i = 0; i < toggler.length; i++) {
+#         toggler[i].addEventListener("click", function() {
+#             this.parentElement.querySelector(".nested").classList.toggle("active");
+#             this.classList.toggle("caret-down");
+#         });
+#     }
+# });
+# </script>    <title>
+#       Tree
+#     </title>
+#     <style type="text/css">
+# ul, .tree {
+# 	list-style-type: none;
+# 	padding-left: 2em;
+# }
+# .caret {
+# 	cursor: pointer;
+# 	-webkit-user-select: none;
+# 	-moz-user-select: none;
+# 	-ms-user-select: none;
+# 	user-select: none;
+# }
+# .caret::before {
+# 	content: "⯈";
+# 	color: black;
+# 	display: inline-block;
+# 	margin-right: 6px;
+# }
+# .caret-down::before {
+# 	transform: rotate(90deg);
+# }
+# .nested {
+# 	display: none;
+# }
+# .active {
+# 	display: block;
+# }
+# </style>
+#   </head>
+#   <body>
+#     <ul class="tree">
+#       <li>
+#         <span class="caret">
+#           Root
+#         </span>
+#         <ul class="nested">
+#           <li>
+#             <span class="caret">
+#               H
+#             </span>
+#             <ul class="nested">
+#               <li>
+#                 <span class="caret">
+#                   I
+#                 </span>
+#                 <ul class="nested">
+#                   <li>
+#                     J
+#                   </li>
+#                 </ul>
+#               </li>
+#               <li>
+#                 K
+#               </li>
+#               <li>
+#                 L
+#               </li>
+#             </ul>
+#           </li>
+#           <li>
+#             M
+#           </li>
+#           <li>
+#             <span class="caret">
+#               N
+#             </span>
+#             <ul class="nested">
+#               <li>
+#                 <span class="caret">
+#                   O
+#                 </span>
+#                 <ul class="nested">
+#                   <li>
+#                     <span class="caret">
+#                       P
+#                     </span>
+#                     <ul class="nested">
+#                       <li>
+#                         Q
+#                       </li>
+#                     </ul>
+#                   </li>
+#                 </ul>
+#               </li>
+#             </ul>
+#           </li>
+#         </ul>
+#       </li>
+#     </ul>
+#   </body>
+# </html>
