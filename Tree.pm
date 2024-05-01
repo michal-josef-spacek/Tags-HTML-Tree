@@ -163,11 +163,9 @@ sub _li {
 		foreach my $child (@children) {
 			$self->_li($child);
 		}
-		if (@children) {
-			$self->{'tags'}->put(
-				['e', 'ul'],
-			);
-		}
+		$self->{'tags'}->put(
+			['e', 'ul'],
+		);
 	} else {
 		$self->{'tags'}->put(
 			['d', $tree->value],
