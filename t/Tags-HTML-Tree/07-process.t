@@ -3,7 +3,7 @@ use warnings;
 
 use Tags::HTML::Tree;
 use Tags::Output::Structure;
-use Test::More 'tests' => 4;
+use Test::More 'tests' => 5;
 use Test::NoWarnings;
 use Tree;
 
@@ -129,3 +129,17 @@ is_deeply(
 	],
 	'Tags code for Tree (root with advanced structure).',
 );
+
+# Test.
+$tags = Tags::Output::Structure->new;
+$obj = Tags::HTML::Tree->new(
+	'tags' => $tags,
+);
+$obj->process;
+$ret_ar = $tags->flush(1);
+is_deeply(
+	$ret_ar,
+	[],
+	'Tags code for Tree (no init).',
+);
+
