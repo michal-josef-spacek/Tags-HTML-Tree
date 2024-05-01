@@ -1,4 +1,6 @@
 Changes
+examples/example_tree_indent.pl
+examples/example_tree_raw.pl
 inc/Module/Install.pm
 inc/Module/Install/AuthorRequires.pm
 inc/Module/Install/AuthorTests.pm
@@ -17,6 +19,11 @@ META.yml
 README
 t/Tags-HTML-Tree/01-use.t
 t/Tags-HTML-Tree/02-version.t
+t/Tags-HTML-Tree/03-new.t
+t/Tags-HTML-Tree/04-cleanup.t
+t/Tags-HTML-Tree/05-init.t
+t/Tags-HTML-Tree/06-process.t
+t/Tags-HTML-Tree/07-process_css.t
 Tree.pm
 xt/Tags-HTML-Tree/01-pod_coverage.t
 xt/Tags-HTML-Tree/02-pod.t

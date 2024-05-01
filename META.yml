@@ -18,6 +18,7 @@ meta-spec:
 name: Tags-HTML-Tree
 no_index:
   directory:
+    - examples
     - inc
     - t
     - xt
@@ -26,7 +27,7 @@ requires:
   English: 0
   Error::Pure: 0
   Mo::utils: 0.01
-  Mo::utils::CSS: 0.02
+  Mo::utils::CSS: 0.06
   Scalar::Util: 0
   Tags::HTML: 0.06
   perl: 5.8.0

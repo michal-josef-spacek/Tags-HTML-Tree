@@ -8,8 +8,9 @@ use Class::Utils qw(set_params split_params);
 use English;
 use Error::Pure qw(err);
 use Mo::utils 0.01 qw(check_required);
-use Mo::utils::CSS 0.02 qw(check_css_class);
+use Mo::utils::CSS 0.06 qw(check_css_class check_css_unit);
 use Scalar::Util qw(blessed);
+use Unicode::UTF8 qw(decode_utf8);
 
 our $VERSION = 0.01;
 
@@ -19,17 +20,22 @@ sub new {
 
 	# Create object.
 	my ($object_params_ar, $other_params_ar) = split_params(
-		['css_class'], @params);
+		['css_class', 'indent'], @params);
 	my $self = $class->SUPER::new(@{$other_params_ar});
 
 	# CSS class.
-	$self->{'css_class'} = 'changes';
+	$self->{'css_class'} = 'tree';
+
+	# Tree indent.
+	$self->{'indent'} = '2em';
 
 	# Process params.
 	set_params($self, @{$object_params_ar});
 
 	check_required($self, 'css_class');
 	check_css_class($self, 'css_class');
+
+	check_css_unit($self, 'indent');
 
 	# Object.
 	return $self;
@@ -58,6 +64,24 @@ sub _init {
 	return;
 }
 
+sub _prepare {
+	my $self = shift;
+
+	$self->script_js([<<"END"]);
+window.addEventListener('load', (event) => {
+    let toggler = document.getElementsByClassName("caret");
+    for (let i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function() {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+    }
+});
+END
+
+	return;
+}
+
 # Process 'Tags'.
 sub _process {
 	my $self = shift;
@@ -67,11 +91,12 @@ sub _process {
 	}
 
 	$self->{'tags'}->put(
-		['b', 'div'],
+		['b', 'ul'],
 		['a', 'class', $self->{'css_class'}],
 	);
+	$self->_li($self->{'_tree'});
 	$self->{'tags'}->put(
-		['e', 'div'],
+		['e', 'ul'],
 	);
 
 	return;
@@ -80,19 +105,76 @@ sub _process {
 sub _process_css {
 	my $self = shift;
 
-	if (! exists $self->{'_tree'}) {
-		return;
-	}
-
 	$self->{'css'}->put(
-		['s', '.'.$self->{'css_class'}],
+		['s', 'ul, .'.$self->{'css_class'}],
+		['d', 'list-style-type', 'none'],
+		['d', 'padding-left', $self->{'indent'}],
 		['e'],
 
-		['s', '.'.$self->{'css_class'}.' .version'],
-		['d', 'border-bottom', '2px solid #eee'],
-		['d', 'padding-bottom', '20px'],
-		['d', 'margin-bottom', '20px'],
+		['s', '.caret'],
+		['d', 'cursor', 'pointer'],
+		['d', '-webkit-user-select', 'none'],
+		['d', '-moz-user-select', 'none'],
+		['d', '-ms-user-select', 'none'],
+		['d', 'user-select', 'none'],
 		['e'],
+
+		['s', '.caret::before'],
+		['d', 'content', decode_utf8('"⯈"')],
+		['d', 'color', 'black'],
+		['d', 'display', 'inline-block'],
+		['d', 'margin-right', '6px'],
+		['e'],
+
+		['s', '.caret-down::before'],
+		['d', 'transform', 'rotate(90deg)'],
+		['e'],
+
+		['s', '.nested'],
+		['d', 'display', 'none'],
+		['e'],
+
+		['s', '.active'],
+		['d', 'display', 'block'],
+		['e'],
+	);
+
+	return;
+}
+
+sub _li {
+	my ($self, $tree) = @_;
+
+	my $meta_hr = $tree->meta;
+	$self->{'tags'}->put(
+		['b', 'li'],
+	);
+	my @children = $tree->children;
+	if (@children) {
+		$self->{'tags'}->put(
+			['b', 'span'],
+			['a', 'class', 'caret'],
+			['d', $tree->value],
+			['e', 'span'],
+
+			['b', 'ul'],
+			['a', 'class', 'nested'],
+		);
+		foreach my $child (@children) {
+			$self->_li($child);
+		}
+		if (@children) {
+			$self->{'tags'}->put(
+				['e', 'ul'],
+			);
+		}
+	} else {
+		$self->{'tags'}->put(
+			['d', $tree->value],
+		);
+	}
+	$self->{'tags'}->put(
+		['e', 'li'],
 	);
 
 	return;
@@ -162,11 +244,9 @@ Returns undef.
 
 =head2 C<init>
 
- $obj->init($changes);
+ $obj->init($tree);
 
-Set L<CPAN::Changes> instance defined by C<$changes> to object.
-
-Minimal version of L<CPAN::Changes> is 0.500002.
+Set L<Tree> instance defined by C<$tree> to object.
 
 Returns undef.
 
@@ -228,8 +308,15 @@ Returns undef.
 
  my $css = CSS::Struct::Output::Raw->new;
  my $tags = Tags::Output::Raw->new(
+         'preserved' => ['style', 'script'],
          'xml' => 1,
  );
+
+ my $tags_tree = Tags::HTML::Tree->new(
+         'css' => $css,
+         'tags' => $tags,
+ );
+ $tags_tree->prepare;
 
  my $begin = Tags::HTML::Page::Begin->new(
          'author' => decode_utf8('Michal Josef Špaček'),
@@ -238,13 +325,10 @@ Returns undef.
          'lang' => {
                  'title' => 'Tree',
          },
+         'script_js' => $tags_tree->script_js,
          'tags' => $tags,
  );
  my $end = Tags::HTML::Page::End->new(
-         'tags' => $tags,
- );
- my $obj = Tags::HTML::Tree->new(
-         'css' => $css,
          'tags' => $tags,
  );
 
@@ -269,14 +353,14 @@ Returns undef.
  $node{'P'}->add_child($node{'Q'});
 
  # Init.
- $obj->init($tree);
+ $tags_tree->init($tree);
 
  # Process CSS.
- $obj->process_css;
+ $tags_tree->process_css;
 
  # Process HTML.
  $begin->process;
- $obj->process;
+ $tags_tree->process;
  $end->process;
 
  # Print out.
@@ -302,9 +386,15 @@ Returns undef.
 
  my $css = CSS::Struct::Output::Indent->new;
  my $tags = Tags::Output::Indent->new(
-         'preserved' => ['style'],
+         'preserved' => ['style', 'script'],
          'xml' => 1,
  );
+
+ my $tags_tree = Tags::HTML::Tree->new(
+         'css' => $css,
+         'tags' => $tags,
+ );
+ $tags_tree->prepare;
 
  my $begin = Tags::HTML::Page::Begin->new(
          'author' => decode_utf8('Michal Josef Špaček'),
@@ -313,14 +403,10 @@ Returns undef.
          'lang' => {
                  'title' => 'Tree',
          },
+         'script_js' => $tags_tree->script_js,
          'tags' => $tags,
  );
  my $end = Tags::HTML::Page::End->new(
-         'tags' => $tags,
- );
-
- my $obj = Tags::HTML::Tree->new(
-         'css' => $css,
          'tags' => $tags,
  );
 
@@ -345,14 +431,14 @@ Returns undef.
  $node{'P'}->add_child($node{'Q'});
 
  # Init.
- $obj->init($tree);
+ $tags_tree->init($tree);
 
  # Process CSS.
- $obj->process_css;
+ $tags_tree->process_css;
 
  # Process HTML.
  $begin->process;
- $obj->process;
+ $tags_tree->process;
  $end->process;
 
  # Print out.
@@ -363,12 +449,13 @@ Returns undef.
 
 =head1 DEPENDENCIES
 
-# TODO
 L<Class::Utils>,
-L<CPAN::Version>,
 L<English>,
 L<Error::Pure>,
+L<Mo::utils>,
+L<Mo::utils::CSS>,
 L<Scalar::Util>,
+L<Unicode::UTF8>,
 L<Tags::HTML>.
 
 =head1 REPOSITORY

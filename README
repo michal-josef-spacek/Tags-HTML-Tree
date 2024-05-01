@@ -44,11 +44,9 @@ METHODS
     Returns undef.
 
   "init"
-     $obj->init($changes);
+     $obj->init($tree);
 
-    Set CPAN::Changes instance defined by $changes to object.
-
-    Minimal version of CPAN::Changes is 0.500002.
+    Set Tree instance defined by $tree to object.
 
     Returns undef.
 
@@ -103,8 +101,15 @@ EXAMPLE1
 
      my $css = CSS::Struct::Output::Raw->new;
      my $tags = Tags::Output::Raw->new(
+             'preserved' => ['style', 'script'],
              'xml' => 1,
      );
+
+     my $tags_tree = Tags::HTML::Tree->new(
+             'css' => $css,
+             'tags' => $tags,
+     );
+     $tags_tree->prepare;
 
      my $begin = Tags::HTML::Page::Begin->new(
              'author' => decode_utf8('Michal Josef Špaček'),
@@ -113,13 +118,10 @@ EXAMPLE1
              'lang' => {
                      'title' => 'Tree',
              },
+             'script_js' => $tags_tree->script_js,
              'tags' => $tags,
      );
      my $end = Tags::HTML::Page::End->new(
-             'tags' => $tags,
-     );
-     my $obj = Tags::HTML::Tree->new(
-             'css' => $css,
              'tags' => $tags,
      );
 
@@ -144,14 +146,14 @@ EXAMPLE1
      $node{'P'}->add_child($node{'Q'});
 
      # Init.
-     $obj->init($tree);
+     $tags_tree->init($tree);
 
      # Process CSS.
-     $obj->process_css;
+     $tags_tree->process_css;
 
      # Process HTML.
      $begin->process;
-     $obj->process;
+     $tags_tree->process;
      $end->process;
 
      # Print out.
@@ -174,9 +176,15 @@ EXAMPLE2
 
      my $css = CSS::Struct::Output::Indent->new;
      my $tags = Tags::Output::Indent->new(
-             'preserved' => ['style'],
+             'preserved' => ['style', 'script'],
              'xml' => 1,
      );
+
+     my $tags_tree = Tags::HTML::Tree->new(
+             'css' => $css,
+             'tags' => $tags,
+     );
+     $tags_tree->prepare;
 
      my $begin = Tags::HTML::Page::Begin->new(
              'author' => decode_utf8('Michal Josef Špaček'),
@@ -185,14 +193,10 @@ EXAMPLE2
              'lang' => {
                      'title' => 'Tree',
              },
+             'script_js' => $tags_tree->script_js,
              'tags' => $tags,
      );
      my $end = Tags::HTML::Page::End->new(
-             'tags' => $tags,
-     );
-
-     my $obj = Tags::HTML::Tree->new(
-             'css' => $css,
              'tags' => $tags,
      );
 
@@ -217,14 +221,14 @@ EXAMPLE2
      $node{'P'}->add_child($node{'Q'});
 
      # Init.
-     $obj->init($tree);
+     $tags_tree->init($tree);
 
      # Process CSS.
-     $obj->process_css;
+     $tags_tree->process_css;
 
      # Process HTML.
      $begin->process;
-     $obj->process;
+     $tags_tree->process;
      $end->process;
 
      # Print out.
@@ -234,8 +238,8 @@ EXAMPLE2
      # TODO
 
 DEPENDENCIES
-    # TODO Class::Utils, CPAN::Version, English, Error::Pure, Scalar::Util,
-    Tags::HTML.
+    Class::Utils, English, Error::Pure, Mo::utils, Mo::utils::CSS,
+    Scalar::Util, Unicode::UTF8, Tags::HTML.
 
 REPOSITORY
     <https://github.com/michal-josef-spacek/Tags-HTML-Tree>
