@@ -622,6 +622,8 @@ Returns undef.
   <img src="https://raw.githubusercontent.com/michal-josef-spacek/Tags-HTML-Tree/master/images/plack_app_tree.png" alt="Web app example" width="300px" height="300px" />
 </a>
 
+=end html
+
 =head1 DEPENDENCIES
 
 L<Class::Utils>,
