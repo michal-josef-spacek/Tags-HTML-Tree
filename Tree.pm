@@ -256,7 +256,8 @@ Returns undef.
 
 Process initialization before page run.
 
-Do nothing in this module.
+Preparing is about adding javascript used in helper to L<Tags::HTML/script_js>
+method.
 
 Returns undef.
 

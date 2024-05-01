@@ -55,7 +55,8 @@ METHODS
 
     Process initialization before page run.
 
-    Do nothing in this module.
+    Preparing is about adding javascript used in helper to "script_js" in
+    Tags::HTML method.
 
     Returns undef.
 
