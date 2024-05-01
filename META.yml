@@ -3,9 +3,16 @@ abstract: 'Tags helper for Tree.'
 author:
   - 'Michal Josef Spacek <skim@cpan.org>'
 build_requires:
+  CSS::Struct::Output::Structure: 0
+  English: 0
+  Error::Pure::Utils: 0
   ExtUtils::MakeMaker: 6.36
+  Tags::Output::Structure: 0
+  Test::MockObject: 0
   Test::More: 0
   Test::NoWarnings: 0
+  Tree: 0
+  Unicode::UTF8: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.36
 distribution_type: module
@@ -30,6 +37,7 @@ requires:
   Mo::utils::CSS: 0.06
   Scalar::Util: 0
   Tags::HTML: 0.06
+  Unicode::UTF8: 0
   perl: 5.8.0
 resources:
   bugtracker: https://github.com/michal-josef-spacek/Tags-HTML-Tree/issues
