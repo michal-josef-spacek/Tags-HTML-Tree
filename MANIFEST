@@ -1,6 +1,8 @@
 Changes
 examples/example_tree_indent.pl
 examples/example_tree_raw.pl
+examples/plack_app_tree.pl
+images/plack_app_tree.png
 inc/Module/Install.pm
 inc/Module/Install/AuthorRequires.pm
 inc/Module/Install/AuthorTests.pm
