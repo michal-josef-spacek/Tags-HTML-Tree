@@ -1,4 +1,5 @@
 0.03
+ - Fix minimal dependency for Tags::HTML. Because of script_js().
 
 0.02 2024-05-01T18:56:06+02:00
  - Fix doc.
