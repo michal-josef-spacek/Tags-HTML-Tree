@@ -201,6 +201,12 @@ Tags::HTML::Tree - Tags helper for Tree.
  $obj->process;
  $obj->process_css;
 
+=head1 DESCRIPTION
+
+L<Tags> helper to print HTML page of tree structure defined by L<Tree> instance.
+
+The page contains clickable tree with usage of Javascript code.
+
 =head1 METHODS
 
 =head2 C<new>
