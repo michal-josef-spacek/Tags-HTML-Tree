@@ -2,10 +2,10 @@ use strict;
 use warnings;
 
 use English;
-use Error::Pure::Utils qw(clean);
+use Error::Pure::Utils qw(clean err_msg);
 use Tags::HTML::Tree;
 use Test::MockObject;
-use Test::More 'tests' => 10;
+use Test::More 'tests' => 13;
 use Test::NoWarnings;
 
 # Test.
@@ -82,6 +82,62 @@ eval {
 };
 is($EVAL_ERROR, "Parameter 'css_class' is required.\n",
 	"Parameter 'css_class' is required.");
+clean();
+
+# Test.
+eval {
+	Tags::HTML::Tree->new(
+		'indent' => 'bad',
+	);
+};
+my @error = err_msg();
+is_deeply(
+	\@error,
+	[
+		"Parameter 'indent' doesn't contain unit number.",
+		'Value',
+		'bad',
+	],
+	"Parameter 'indent' doesn't contain unit number (bad).",
+);
+clean();
+
+# Test.
+eval {
+	Tags::HTML::Tree->new(
+		'indent' => '100',
+	);
+};
+@error = err_msg();
+is_deeply(
+	\@error,
+	[
+		"Parameter 'indent' doesn't contain unit name.",
+		'Value',
+		'100',
+	],
+	"Parameter 'indent' doesn't contain unit name (100).",
+);
+clean();
+
+# Test.
+eval {
+	Tags::HTML::Tree->new(
+		'indent' => '100xx',
+	);
+};
+@error = err_msg();
+is_deeply(
+	\@error,
+	[
+		"Parameter 'indent' contain bad unit.",
+		'Unit',
+		'xx',
+		'Value',
+		'100xx',
+	],
+	"Parameter 'indent' contain bad unit (100xx).",
+);
 clean();
 
 # Test.
