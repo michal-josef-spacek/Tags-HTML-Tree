@@ -15,7 +15,7 @@ author_requires 'Test::Pod' => 0;
 author_requires 'Test::Pod::Coverage' => 0;
 license 'bsd';
 name 'Tags-HTML-Tree';
-readme_from 'Tree.pm';
+readme_from 'lib/Tags/HTML/Tree.pm';
 recursive_author_tests('xt');
 requires 'Class::Utils' => 0;
 requires 'English' => 0;
