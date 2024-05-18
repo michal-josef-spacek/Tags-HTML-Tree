@@ -2,6 +2,7 @@
  - Add tests for bad 'css_class' parameter.
  - Add tests for bad 'indent' parameter.
  - Fix ERRORS section in doc.
+ - Fix author test.
  - Fix minimal version of Mo::utils::CSS to 0.07.
  - Fix regen of README file.
 
