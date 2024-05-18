@@ -1,5 +1,6 @@
 0.05
  - Fix ERRORS section in doc.
+ - Fix minimal version of Mo::utils::CSS to 0.07.
 
 0.04 2024-05-12T11:57:31+02:00
  - Add DESCRIPTION section to doc.

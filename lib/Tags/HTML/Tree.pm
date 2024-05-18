@@ -8,7 +8,7 @@ use Class::Utils qw(set_params split_params);
 use English;
 use Error::Pure qw(err);
 use Mo::utils 0.01 qw(check_required);
-use Mo::utils::CSS 0.06 qw(check_css_class check_css_unit);
+use Mo::utils::CSS 0.07 qw(check_css_class check_css_unit);
 use Scalar::Util qw(blessed);
 use Unicode::UTF8 qw(decode_utf8);
 
