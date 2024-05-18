@@ -5,7 +5,7 @@ use English;
 use Error::Pure::Utils qw(clean err_msg);
 use Tags::HTML::Tree;
 use Test::MockObject;
-use Test::More 'tests' => 13;
+use Test::More 'tests' => 15;
 use Test::NoWarnings;
 
 # Test.
@@ -51,6 +51,26 @@ eval {
 };
 is($EVAL_ERROR, "Parameter 'css_class' is required.\n",
 	"Parameter 'css_class' is required.");
+clean();
+
+# Test.
+eval {
+	Tags::HTML::Tree->new(
+		'css_class' => '@foo',
+	);
+};
+is($EVAL_ERROR, "Parameter 'css_class' has bad CSS class name.\n",
+	"Parameter 'css_class' has bad CSS class name (\@foo).");
+clean();
+
+# Test.
+eval {
+	Tags::HTML::Tree->new(
+		'css_class' => '1foo',
+	);
+};
+is($EVAL_ERROR, "Parameter 'css_class' has bad CSS class name (number on begin).\n",
+	"Parameter 'css_class' has bad CSS class name (number on begin) (1foo).");
 clean();
 
 # Test.
