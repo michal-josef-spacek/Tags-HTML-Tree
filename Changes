@@ -1,4 +1,5 @@
 0.06
+ - Add 'cb_value' parameter.
 
 0.05 2024-05-18T09:30:11+02:00
  - Add tests for bad 'css_class' parameter.

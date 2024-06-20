@@ -1,10 +1,13 @@
 TODO
 ====
 1. What about Tree::Writer::Tags::HTML::List ?
-3. What about printing of metadata in Tree?
 4.
 
 Applied
 =======
 2. Add plack example with image to doc.
 OK [20240501] skim
+
+3. What about printing of metadata in Tree?
+Added 'cb_value' parameter to user handle of Tree value.
+OK [20240620] skim
