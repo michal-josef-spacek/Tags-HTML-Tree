@@ -113,7 +113,7 @@ ERRORS
                      Parameter 'cb_value' must be a code.
                              Value: %s
              From Mo::utils::check_required():
-                     Parameter '%s' is required.
+                     Parameter 'css_class' is required.
              From Mo::utils::CSS::check_css_class():
                      Parameter 'css_class' has bad CSS class name.
                              Value: %s
